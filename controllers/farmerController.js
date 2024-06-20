@@ -47,7 +47,9 @@ exports.forgotPassword = async (req, res) => {
     const resetToken = jwt.sign({ farmerId: farmer._id }, config.jwtSecret, { expiresIn: '30m' });
 
     const transporter = nodemailer.createTransport({
-      service: config.emailService.service,
+      host: config.emailService.service,
+      port: config.emailService.port,
+      secure: false,
       auth: {
         user: config.emailService.auth.user,
         pass: config.emailService.auth.pass,
@@ -55,7 +57,7 @@ exports.forgotPassword = async (req, res) => {
     });
 
     const mailOptions = {
-      from: 'your_email@example.com',
+    from: `"Cropscope" ${ config.emailService.auth.user}`,
       to: email,
       subject: 'CropScope Password Reset',
       html: `

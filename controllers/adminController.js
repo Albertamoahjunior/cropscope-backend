@@ -70,7 +70,7 @@ exports.login = async (req, res) => {
 
     jwt.sign(
       payload,
-      process.env.JWT_SECRET,
+      config.jwtSecret,
       { expiresIn: '1h' },
       (err, token) => {
         if (err) throw err;
@@ -79,6 +79,7 @@ exports.login = async (req, res) => {
     );
   } catch (error) {
     console.error(error.message);
+    console.log(`secret key:${config.jwtSecret}`);
     res.status(500).send('Server Error');
   }
 };
@@ -103,7 +104,9 @@ exports.forgotPassword = async (req, res) => {
 
     // Email service setup (nodemailer)
     const transporter = nodemailer.createTransport({
-      service: config.emailService.service,
+      host: config.emailService.service,
+      port: config.emailService.port,
+      secure: false,
       auth: {
         user: config.emailService.auth.user,
         pass: config.emailService.auth.pass,
@@ -112,12 +115,12 @@ exports.forgotPassword = async (req, res) => {
 
     // Email content
     const mailOptions = {
-      from: 'your_email@example.com',
+      from: `"Cropscope" ${config.emailService.auth.user}`,
       to: email,
       subject: 'CropScope Password Reset',
       html: `
         <p>You requested a password reset for your CropScope account.</p>
-        <p>Click <a href="http://localhost:3000/reset-password/${resetToken}">here</a> to reset your password.</p>
+        <p>Click <a href="http://localhost:3000/admin/reset-password/${resetToken}">here</a> to reset your password.</p>
       `,
     };
 
