@@ -1,48 +1,38 @@
+// app.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const dotenv = require('dotenv');
+const errorMiddleware = require('./middleware/errorMiddleware');
+const adminRoutes = require('./routes/adminRoutes');
+const farmerRoutes = require('./routes/farmerRoutes');
 
+// Load environment variables
+dotenv.config();
+
+// Initialize app
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
-
-mongoose.connection.on('connected', () => {
-  console.log('Connected to MongoDB');
-});
-
-mongoose.connection.on('error', (err) => {
-  console.error('MongoDB connection error:', err);
-});
-
-// Models
-const Admin = require('./models/admin');
-const Farmer = require('./models/farmer');
-
-// Controllers
-const adminController = require('./controllers/adminController');
-const authController = require('./controllers/authController');
-const farmerController = require('./controllers/farmerController');
-
 // Routes
-const adminRoutes = require('./routes/adminRoutes');
-const authRoutes = require('./routes/authRoutes');
-app.use('/admin', adminRoutes);
-app.use('/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/farmer', farmerRoutes);
+
+// Error handling middleware
+app.use(errorMiddleware);
+
+// Connect to MongoDB
+const uri = process.env.MONGODB_URI;
+// MongoDB connection
+mongoose.connect(uri)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log(`Server is running on port: ${port}`);
 });
