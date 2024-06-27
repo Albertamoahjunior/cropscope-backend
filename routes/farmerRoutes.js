@@ -12,5 +12,6 @@ router.post('/reset-password', farmerController.resetPassword);
 // Protected routes
 router.use(authMiddleware);
 router.post('/data-analysis', farmerController.dataAnalysis);
+router.post('/update-phone', farmerController.updatePhone);
 
 module.exports = router;

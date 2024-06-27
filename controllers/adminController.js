@@ -187,7 +187,7 @@ exports.listFarmers = async (req, res) => {
 
 // Admin add farmer
 exports.addFarmer = async (req, res) => {
-  const { fullName, email, password, location} = req.body;
+  const { fullName, email, password, location, phone} = req.body;
 
   try {
     let farmer = await Farmer.findOne({ email });
@@ -201,6 +201,7 @@ exports.addFarmer = async (req, res) => {
       email,
       password,
       location,
+      phone,
     });
 
     await farmer.save();
