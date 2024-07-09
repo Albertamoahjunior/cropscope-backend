@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const errorMiddleware = require('./middleware/errorMiddleware');
 const adminRoutes = require('./routes/adminRoutes');
 const farmerRoutes = require('./routes/farmerRoutes');
+const mqtt_listener = require('./controllers/sensorDataCollection');
 
 // Load environment variables
 dotenv.config();
@@ -30,6 +31,9 @@ const uri = process.env.MONGODB_URI;
 mongoose.connect(uri)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
+
+//listen for sensor data
+mqtt_listener();
 
 // Start server
 const port = process.env.PORT;

@@ -16,48 +16,57 @@ const generateToken = (id) => {
 //send message concerning critical conditions
 //message for critical temperature
 const atmosphericTemperatureHigh = (temperature, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone}&from=CropScope&sms=The atmospheric temperature of your farm is too high, please water it.The temperature is ${temperature}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone.substring(1)}&from=CropScope&sms=The atmospheric temperature of your farm is too high, please water it.The temperature is ${temperature}`)
   .then((response) => {console.log(response.data)})
 }
 
 //message for critical temperature
 const atmosphericTemperatureLow = (temperature, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone}&from=CropScope&sms=The atmospheric temperature of your farm is too low, please do  not water it.The temperature is ${temperature}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone.substring(1)}&from=CropScope&sms=The atmospheric temperature of your farm is too low, please do  not water it.The temperature is ${temperature}`)
   .then((response) => {console.log(response.data)})
 }
 
 //message for critical moisture level low
 const soilMoisturelow = (moistureLevel, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone}&from=CropScope&sms=The soil moisture level of your farm is too low, please water it.The moisture level is ${moistureLevel}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone.substring(1)}&from=CropScope&sms=The soil moisture level of your farm is too low, please water it.The moisture level is ${moistureLevel}`)
   .then((response) => {console.log(response.data)})
 }
 
 //message for critical moisture level High
 const soilMoistureHigh = (moistureLevel, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone}&from=CropScope&sms=The soil moisture level of your farm is too high, please do not water it.The moisture level is ${moistureLevel}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone.substring(1)}&from=CropScope&sms=The soil moisture level of your farm is too high, please do not water it.The moisture level is ${moistureLevel}`)
   .then((response) => {console.log(response.data)})
 }
 
 //message for critical humidity
 const atmosphericHumidityHigh = (moistureLevel, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone}&from=CropScope&sms=The atmospheric humdity level of your farm is too high, please do not water it.The humidity level is ${moistureLevel}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone.substring(1)}&from=CropScope&sms=The atmospheric humdity level of your farm is too high, please do not water it.The humidity level is ${moistureLevel}`)
   .then((response) => {console.log(response.data)})
 }
 
 const atmosphericHumidityLow = (moistureLevel, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone}&from=CropScope&sms=The soil moisture level of your farm is too low, please do not water it.The humidity level is ${moistureLevel}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone.substring(1)}&from=CropScope&sms=The soil moisture level of your farm is too low, please do not water it.The humidity level is ${moistureLevel}`)
   .then((response) => {console.log(response.data)})
 }
 
 const soilPhLow = (soilpH, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone}&from=CropScope&sms=The soil pH of your farm is too low, please do not water it.The moisture level is ${soilpH}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone.substring(1)}&from=CropScope&sms=The soil pH of your farm is too low, please do not water it.The moisture level is ${soilpH}`)
   .then((response) => {console.log(response.data)})
 }
 
 const soilPhHigh= (soilpH, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone}&from=CropScope&sms=The soil pH of your farm is too high, please do not water it.The moisture level is ${soilpH}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=S3NnaHVHTXZsd1BuRE53SUtNaGg&to=${phone.substring(1)}&from=CropScope&sms=The soil pH of your farm is too high, please do not water it.The moisture level is ${soilpH}`)
   .then((response) => {console.log(response.data)})
 }
+
+const ATMOTEMPSLOWTHRESHOLD = 10 
+const ATMOTEMPHIGHTHRESHOLD = 30
+const SOILMOISTURELOWTHRESHOLD = 20
+const SOILMOISTUREHIGHTHRESHOLD = 80
+const ATMOHUMIDITYLOWTHRESHOLD = 40
+const ATMOHUMIDITYHIGHTHRESHOLD = 60
+const SOILPHLOWTHRESHOLD = 6.5
+const SOILPHHIGHTHRESHOLD = 8.0
 
 // Login controller
 exports.login = async (req, res) => {
@@ -177,34 +186,64 @@ exports.resetPassword = async (req, res) => {
 };
 
 // Data analysis controller (protected route)
-exports.dataAnalysis = async (req, res) => {
-   const {id, atmosphericHumidity, atmosphericTemperature, soilMoisture, soilPH} = req.body;
-   let farmer_phone = "";
+exports.dataAnalysis = async (farm_data) => {
+  const {id, atmosphericHumidity, atmosphericTemperature, soilMoisture, soilPH} = farm_data;
    try {
-    const farmer = await Farmer.findOne({id});
-    farmer_phone = await farmer.phone;
+      const farmer = await Farmer.findOne({_id: id});
+      
+      // Ensure the farmer object exists before accessing its properties
+      if (!farmer) {
+        throw new Error("Farmer not found");
+      }
 
-    if (!farmer) {
-      return res.status(404).json({ msg: 'Farmer not found' });
-    }
+      const farmer_phone = farmer.phone;
 
-    //collect the data required for analytics from GCP using the farmer id
-    const newAnalytics = new Analytics();
-    newAnalytics._id = id;
-    newAnalytics.timestamp = Date.now();
-    newAnalytics.atmosphericTemperature = atmosphericTemperature;
-    newAnalytics.atmosphericHumidity = atmosphericHumidity;
-    newAnalytics.soilMoisture = soilMoisture;
-    newAnalytics.soilPH = soilPH;
+      // Alert for humidity
+      if (atmosphericHumidity < ATMOHUMIDITYLOWTHRESHOLD) {
+        atmosphericHumidityLow(atmosphericHumidity, farmer_phone);
+      } else if (atmosphericHumidity > ATMOHUMIDITYHIGHTHRESHOLD) {
+        atmosphericHumidityHigh(atmosphericHumidity, farmer_phone);
+      }
+
+      // Alert for temperature
+      if (atmosphericTemperature < ATMOTEMPSLOWTHRESHOLD) {
+        atmosphericTemperatureLow(atmosphericTemperature, farmer_phone);
+      } else if (atmosphericTemperature > ATMOTEMPHIGHTHRESHOLD) {
+        atmosphericTemperatureHigh(atmosphericTemperature, farmer_phone);
+      }
+
+      // Alert for soil moisture
+      if (soilMoisture < SOILMOISTURELOWTHRESHOLD) {
+        soilMoisturelow(soilMoisture, farmer_phone);
+      } else if (soilMoisture > SOILMOISTUREHIGHTHRESHOLD) {
+        soilMoistureHigh(soilMoisture, farmer_phone);
+      }
+
+      // Alert for soil pH
+      if (soilPH < SOILPHLOWTHRESHOLD) {
+        soilPhLow(soilPH, farmer_phone);
+      } else if (soilPH > SOILPHHIGHTHRESHOLD) {
+        soilPhHigh(soilPH, farmer_phone);
+      }
+
+    const newAnalytics = new Analytics({
+      _id: id,
+      atmosphericTemperature: atmosphericTemperature,
+      atmosphericHumidity: atmosphericHumidity,
+      soilMoisture: soilMoisture,
+      soilPH: soilPH,
+    });
 
     newAnalytics.save()
-    .then(() => res.status(200).send("analytics saved successfully"))
-    .catch(() => res.status(400).send("analytics saved failed"))
+      .then(() => console.log('Analytics saved successfully'))
+      .catch(err => console.error('Error saving analytics:', err));
+
+}
 
     
-  } catch (error) {
+  catch (error) {
     console.error(error.message);
-    res.status(500).send('Server Error');
+    return 'Server Error';
   }
 };
 
