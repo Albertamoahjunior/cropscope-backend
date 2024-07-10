@@ -16,6 +16,13 @@ dotenv.config();
 const app = express();
 
 // Middleware
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Allow all origins
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
 const corsOptions = {
   origin: ['http://localhost:3000', 'https://cropscope-webapp-frontend.vercel.app'],
   optionsSuccessStatus: 200
