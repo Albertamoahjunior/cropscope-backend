@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const errorMiddleware = require('./middleware/errorMiddleware');
 const adminRoutes = require('./routes/adminRoutes');
 const farmerRoutes = require('./routes/farmerRoutes');
+const testRoutes = require('./routes/testRoutes');
 const mqtt_listener = require('./controllers/sensorDataCollection');
 
 // Load environment variables
@@ -21,6 +22,7 @@ app.use(express.json());
 // Routes
 app.use('/api/admin', adminRoutes);
 app.use('/api/farmer', farmerRoutes);
+app.use('/api/test', testRoutes);
 
 // Error handling middleware
 app.use(errorMiddleware);
