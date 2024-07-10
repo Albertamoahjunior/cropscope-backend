@@ -5,7 +5,7 @@ const pingSite = (req, res) =>{
     res.send("OK");
 }
 
-router.get('/ping', pingSite);
+router.get('/', pingSite);
 
 module.exports = router;
 

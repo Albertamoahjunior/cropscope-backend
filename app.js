@@ -20,9 +20,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+app.use('/', testRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/farmer', farmerRoutes);
-app.use('/api/test', testRoutes);
 
 // Error handling middleware
 app.use(errorMiddleware);
