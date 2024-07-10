@@ -23,12 +23,9 @@ app.use((req, res, next) => {
   next();
 });
 
-const corsOptions = {
-  origin: ['http://localhost:3000', 'https://cropscope-webapp-frontend.vercel.app'],
-  optionsSuccessStatus: 200
-};
 
-app.use(cors(corsOptions));
+
+app.use(cors());
 app.use(express.json());
 
 // Routes
