@@ -9,8 +9,8 @@ const mqttUrl = 'mqtts://119c3601f1db48a19381887555f09c73.s1.eu.hivemq.cloud:888
 // Create a client instance
 const client = mqtt.connect(mqttUrl, {
   clientId: "9b169250-fa57-4f66-aa21-2e3fce8bd4ba",
-  username: config.mqttusername,
-  password: config.mqttpassword,
+  username: config.mqttusername || "albertlife",
+  password: config.mqttpassword || "Qsx.123_456",
   rejectUnauthorized: false,
   clean:false
 });
