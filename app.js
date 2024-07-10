@@ -17,7 +17,7 @@ const app = express();
 
 // Middleware
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://your-production-frontend-domain.com'],
+  origin: ['http://localhost:3000', 'https://cropscope-webapp-frontend.vercel.app/'],
   optionsSuccessStatus: 200
 };
 
