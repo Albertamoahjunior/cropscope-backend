@@ -1,16 +1,16 @@
 const mqtt = require('mqtt');
 const {dataAnalysis} = require('./farmerController');
+const config = require('../config'); 
+
 
 // Replace with your HiveMQ credentials and TLS URL
-const username = 'albertlife';
-const password = 'Qsx.123_456';
 const mqttUrl = 'mqtts://119c3601f1db48a19381887555f09c73.s1.eu.hivemq.cloud:8883';
 
 // Create a client instance
 const client = mqtt.connect(mqttUrl, {
   clientId: "9b169250-fa57-4f66-aa21-2e3fce8bd4ba",
-  username: username,
-  password: password,
+  username: config.mqttusername,
+  password: config.mqttpassword,
   rejectUnauthorized: false,
   clean:false
 });

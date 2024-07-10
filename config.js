@@ -12,4 +12,6 @@ module.exports = {
       pass: process.env.EMAIL_PASSWORD,
     },
   },
+  mqttusername: process.env.MQTT_USERNAME,
+  mqttpassword: process.env.MQTT_PASSWORD,
 };
