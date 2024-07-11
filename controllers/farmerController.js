@@ -326,6 +326,7 @@ exports.fetchRecommendations = async (req, res) => {
     }
 
     //collect the data required for recommendations from GCP using the farmer id
+    //return their recommendations to them
 
     
   } catch (error) {
