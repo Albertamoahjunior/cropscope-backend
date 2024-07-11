@@ -16,13 +16,6 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Allow all origins
-  next();
-});
-
-
-
 app.use(cors());
 app.use(express.json());
 
