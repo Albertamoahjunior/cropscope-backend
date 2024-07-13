@@ -143,7 +143,7 @@ exports.forgotPassword = async (req, res) => {
       subject: 'CropScope Password Reset',
       html: `
         <p>You requested a password reset for your CropScope account.</p>
-        <p>Click <a href="https://cropscope-webapp-frontend.vercel.app/reset-password/${resetToken}">here</a> to reset your password.</p>
+        <p>Click <a href="https://cropscope-webapp-frontend.vercel.app/farmer/reset-password/${resetToken}">here</a> to reset your password.</p>
       `,
     };
 
