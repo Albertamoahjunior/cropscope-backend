@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const pingSite = (req, res) =>{
-    res.send("OK");
+    res.sendStatus(200);
 }
 
 router.get('/', pingSite);
