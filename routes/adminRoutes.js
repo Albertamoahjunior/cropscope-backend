@@ -9,7 +9,7 @@ router.get('/check-auth', authMiddleware);
 router.post('/signup', adminController.signup);
 router.post('/login', adminController.login);
 router.post('/forgot-password', adminController.forgotPassword);
-router.post('/reset-password', adminController.resetPassword);
+router.post('/reset-password/:token', adminController.resetPassword);
 
 // Protected routes
 router.use(authMiddleware);

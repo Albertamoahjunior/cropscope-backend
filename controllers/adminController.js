@@ -143,15 +143,16 @@ exports.forgotPassword = async (req, res) => {
 
 // Admin reset password
 exports.resetPassword = async (req, res) => {
-  const { resetToken, newPassword } = req.body;
+  const { token } = req.params;
+  const { password } = req.body;
 
-  if (!resetToken || !newPassword) {
+  if (!token || !password) {
     return res.status(400).json({ msg: 'Token or password missing' });
   }
 
   try {
     // Verify reset token
-    const decoded = jwt.verify(resetToken, config.jwtSecret);
+    const decoded = jwt.verify(token, config.jwtSecret);
     const adminId = decoded.adminId;
 
     let admin = await Admin.findById(adminId);
@@ -162,7 +163,7 @@ exports.resetPassword = async (req, res) => {
 
     // Hash new password
     const salt = await bcrypt.genSalt(10);
-    admin.password = await bcrypt.hash(newPassword, salt);
+    admin.password = await bcrypt.hash(password, salt);
 
     // Save admin with new password
     await admin.save();

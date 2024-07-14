@@ -7,7 +7,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 // Public routes
 router.post('/login', farmerController.login);
 router.post('/forgot-password', farmerController.forgotPassword);
-router.post('/reset-password', farmerController.resetPassword);
+router.post('/reset-password/:token', farmerController.resetPassword);
 
 // Protected routes
 router.use(authMiddleware);

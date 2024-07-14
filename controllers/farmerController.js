@@ -164,17 +164,18 @@ exports.forgotPassword = async (req, res) => {
 
 // Reset password controller
 exports.resetPassword = async (req, res) => {
-  const { resetToken, newPassword } = req.body;
+  const {token} = req.params; 
+  const {password} = req.body;
 
   try {
-    const decoded = jwt.verify(resetToken, config.jwtSecret);
+    const decoded = jwt.verify(token, config.jwtSecret);
     const farmer = await Farmer.findById(decoded.farmerId);
 
     if (!farmer) {
       return res.status(400).json({ msg: 'Invalid token or farmer does not exist' });
     }
 
-    farmer.password = newPassword;
+    farmer.password = password;
     await farmer.save();
 
     res.status(200).json({ msg: 'Password reset successfully' });
