@@ -28,7 +28,7 @@ app.use('/api/farmer', farmerRoutes);
 app.use(errorMiddleware);
 
 // Connect to MongoDB
-const uri = process.env.MONGODB_URI "mongodb+srv://albertlife:Qsx.123_456@cropscope.9a9bxjh.mongodb.net/?retryWrites=true&w=majority&appName=cropscope" ;
+const uri = process.env.MONGODB_URI || "mongodb+srv://albertlife:Qsx.123_456@cropscope.9a9bxjh.mongodb.net/?retryWrites=true&w=majority&appName=cropscope" ;
 // MongoDB connection
 mongoose.connect(uri)
   .then(() => console.log('MongoDB connected'))
