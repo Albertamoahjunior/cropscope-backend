@@ -1,60 +1,71 @@
 const mqtt = require('mqtt');
-const {dataAnalysis} = require('./farmerController');
-const config = require('../config'); 
+const { dataAnalysis } = require('./farmerController');
+const config = require('../config');
 
+const subscribeToTopic= () => {
+  const clientId = 'cropscope' + Math.random().toString(16).substring(2, 8);
+  const username = 'albertlife';
+  const password = 'Qsx.123_456';
 
-// Replace with your HiveMQ credentials and TLS URL
-const mqttUrl = 'mqtts://119c3601f1db48a19381887555f09c73.s1.eu.hivemq.cloud:8883';
-
-// Create a client instance
-const client = mqtt.connect(mqttUrl, {
-  clientId: "9b169250-fa57-4f66-aa21-2e3fce8bd4ba",
-  username: config.mqttusername || "albertlife",
-  password: config.mqttpassword || "Qsx.123_456",
-  rejectUnauthorized: false,
-  clean:false
-});
-
-// Function to handle connection and subscribing
-function subscribeToTopic() {
-  client.on('connect', function () {
-    console.log('Connected to MQTT broker');
-
-    // Subscribe to a topic with QoS 2
-    client.subscribe('cropscopefarm', { qos: 2 }, function (err) {
-      if (!err) {
-        console.log('Subscribed to cropscopefarm broker');
-      }
+  let client;
+  try {
+    client = mqtt.connect('mqtts://z44662e8.ala.eu-central-1.emqxsl.com:8883', {
+      clientId,
+      username,
+      password,
     });
+  } catch (err) {
+    console.error('MQTT connection error:', err);
+  }
+
+  const topic = 'cropscopefarm';
+  const qos = 0;
+
+  try {
+    client.subscribe(topic, { qos }, (error) => {
+      if (error) {
+        console.log('Subscribe error:', error);
+        return;
+      }
+      console.log(`Subscribed to topic '${topic}'`);
+    });
+  } catch (err) {
+    console.error('Error subscribing to topic:', err);
+  }
+
+  client.on('message', (topic, payload) => {
+    try {
+      console.log('Received Message:', topic, payload.toString());
+      // Convert message to JSON if needed and process
+      const jsonMessage = JSON.parse(payload.toString());
+      dataAnalysis(jsonMessage); // Ensure this function is correctly defined in farmerController.js
+    } catch (err) {
+      console.error('Error processing message:', err);
+    }
   });
 
-  // Handle incoming messages
-  client.on('message', function (topic, message) {
-    //convert the message to a json object
-    // Given string
-    const string_message = message.toString();
-
-    // Convert string to valid JSON format
-    const jsonStr = string_message
-    .replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2": ')
-    .replace(/'/g, '"');
-
-    // Parse the JSON string to JavaScript object
-    const json_message = JSON.parse(jsonStr);
-    
-    //store data in database
-    dataAnalysis(json_message); // this function should be defined in your farmerController.js file
-
-
-    console.log(json_message); // Output: { temp: 10, hum: 10 }
-
+  client.on('error', (err) => {
+    console.log('Connection error:', err);
   });
 
-  // Handle errors
-  client.on('error', function (err) {
-    console.error('Error:', err);
+  client.on('connect', () => {
+    console.log('Connected to MQTT broker');
   });
-}
+
+  client.on('close', () => {
+    console.log('Connection closed');
+  });
+
+  client.on('offline', () => {
+    console.log('Client went offline');
+  });
+
+  client.on('reconnect', () => {
+    console.log('Reconnecting to MQTT broker...');
+  });
+
+  return client;
+};
 
 module.exports = subscribeToTopic;
 

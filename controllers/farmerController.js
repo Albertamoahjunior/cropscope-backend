@@ -188,9 +188,9 @@ exports.resetPassword = async (req, res) => {
 
 // Data analysis controller (protected route)
 exports.dataAnalysis = async (farm_data) => {
-  const {id, atmosphericHumidity, atmosphericTemperature, soilMoisture, soilPH} = farm_data;
+  const {farmerID, atmosphericHumidity, atmosphericTemperature, soilMoisture, soilPH} = farm_data;
    try {
-      const farmer = await Farmer.findOne({_id: id});
+      const farmer = await Farmer.findOne({_id: farmerID});
       
       // Ensure the farmer object exists before accessing its properties
       if (!farmer) {
@@ -228,7 +228,7 @@ exports.dataAnalysis = async (farm_data) => {
       }
 
     const newAnalytics = new Analytics({
-      _id: id,
+      farmerID: farmerID,
       atmosphericTemperature: atmosphericTemperature,
       atmosphericHumidity: atmosphericHumidity,
       soilMoisture: soilMoisture,
@@ -250,16 +250,33 @@ exports.dataAnalysis = async (farm_data) => {
 
 //fetch data Analytics
 exports.fetchDataAnalytics = async (req, res) => {
-  const {id} = req.params;
+  const {id, timeframe} = req.body;
    try {
-    const farmer = await Farmer.findOne({id});
+    const farmer = await Farmer.findById(id);
 
     if (!farmer) {
       return res.status(404).json({ msg: 'Farmer not found' });
     }
 
-    //collect the data required for analytics from GCP using the farmer id
-    const analytics = await Analytics.findById(id);
+    //collect the data analytics
+    switch(timeframe){
+      case 'today':
+      const todayAnalytics = await Analytics.getToday(id)
+      res.json(weekAnalytics);
+      break;
+      case 'week':
+        const weekAnalytics = await Analytics.getAveragesForWeek(id)
+        res.json(weekAnalytics);
+      break;
+      case 'month':
+      const monthAnalytics = await Analytics.getAveragesForMonth(id)
+      res.json(weekAnalytics);
+      break;
+      case 'week':
+      const yearAnalytics = await Analytics.getAveragesForYear(id)
+      res.json(weekAnalytics);
+      break;
+    }
 
     
   } catch (error) {
@@ -272,22 +289,31 @@ exports.fetchDataAnalytics = async (req, res) => {
 
 //controller to overview data
 exports.fetchOverviewData = async (req, res) => {
-  const {id} = req.params;
-   try {
-    const farmer = await Farmer.findOne({id});
+  const { id } = req.body;
+  
+  console.log(id);
+  try {
+    const farmer = await Farmer.findById(id);
 
     if (!farmer) {
       return res.status(404).json({ msg: 'Farmer not found' });
     }
 
-    //collect the data required for overview from GCP using the farmer id
+    // Retrieve the data using the static method on the Analytics model
+    const data = await Analytics.getAveragesForToday(id);
 
-    
+    if (!data) {
+      return res.status(404).json({ msg: 'No data found for today' });
+    }
+
+    res.status(200).json(data);
+
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');
   }
 };
+
 
 
 //controller to fetch recommendations

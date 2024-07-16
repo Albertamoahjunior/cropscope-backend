@@ -13,5 +13,7 @@ router.post('/reset-password/:token', farmerController.resetPassword);
 router.use(authMiddleware);
 router.post('/data-analysis', farmerController.dataAnalysis);
 router.post('/update-phone', farmerController.updatePhone);
+router.post('/overview',farmerController.fetchOverviewData);
+router.post('/fetch-data-analytics',farmerController.fetchDataAnalytics);
 
 module.exports = router;
