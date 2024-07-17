@@ -262,7 +262,7 @@ exports.fetchDataAnalytics = async (req, res) => {
     switch(timeframe){
       case 'today':
       const todayAnalytics = await Analytics.getToday(id)
-      res.json(weekAnalytics);
+      res.json(todayAnalytics);
       break;
       case 'week':
         const weekAnalytics = await Analytics.getAveragesForWeek(id)
@@ -270,11 +270,11 @@ exports.fetchDataAnalytics = async (req, res) => {
       break;
       case 'month':
       const monthAnalytics = await Analytics.getAveragesForMonth(id)
-      res.json(weekAnalytics);
+      res.json(monthAnalytics);
       break;
       case 'week':
       const yearAnalytics = await Analytics.getAveragesForYear(id)
-      res.json(weekAnalytics);
+      res.json(yearAnalytics);
       break;
     }
 

@@ -35,6 +35,34 @@ function getDayRange(date) {
   return { startOfDay, endOfDay };
 }
 
+// Static method to get average values for every 10 minutes in a day
+AnalyticsSchema.statics.getToday = async function(farmerID) {
+  const { startOfDay, endOfDay } = getDayRange(new Date());
+
+  const result = await this.aggregate([
+    { $match: { farmerID, timestamp: { $gte: startOfDay, $lt: endOfDay } } },
+    {
+      $group: {
+        _id: {
+          year: { $year: '$timestamp' },
+          month: { $month: '$timestamp' },
+          day: { $dayOfMonth: '$timestamp' },
+          hour: { $hour: '$timestamp' },
+          minute: { $subtract: [{ $minute: '$timestamp' }, { $mod: [{ $minute: '$timestamp' }, 10] }] } // Group by 10-minute intervals
+        },
+        averageAtmosphericTemperature: { $avg: '$atmosphericTemperature' },
+        averageAtmosphericHumidity: { $avg: '$atmosphericHumidity' },
+        averageSoilMoisture: { $avg: '$soilMoisture' },
+        averageSoilPH: { $avg: '$soilPH' }
+      }
+    },
+    { $sort: { '_id.year': 1, '_id.month': 1, '_id.day': 1, '_id.hour': 1, '_id.minute': 1 } }
+  ]);
+
+  return result;
+};
+
+
 // Static method to get average values and latest timestamp for today
 AnalyticsSchema.statics.getAveragesForToday = async function(farmerID) {
   const { startOfDay, endOfDay } = getDayRange(new Date());
