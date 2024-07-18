@@ -114,19 +114,33 @@ AnalyticsSchema.statics.getAveragesForMonth = async function(farmerID) {
   const result = await this.aggregate([
     { $match: { farmerID, timestamp: { $gte: startOfMonth } } },
     {
+      $project: {
+        weekOfMonth: {
+          $ceil: {
+            $divide: [{ $subtract: [{ $dayOfMonth: '$timestamp' }, 1] }, 7]
+          }
+        },
+        atmosphericTemperature: 1,
+        atmosphericHumidity: 1,
+        soilMoisture: 1,
+        soilPH: 1
+      }
+    },
+    {
       $group: {
-        _id: { $week: '$timestamp' },
+        _id: { weekOfMonth: '$weekOfMonth' },
         averageAtmosphericTemperature: { $avg: '$atmosphericTemperature' },
         averageAtmosphericHumidity: { $avg: '$atmosphericHumidity' },
         averageSoilMoisture: { $avg: '$soilMoisture' },
         averageSoilPH: { $avg: '$soilPH' },
       }
     },
-    { $sort: { '_id': 1 } }
+    { $sort: { '_id.weekOfMonth': 1 } }
   ]);
 
   return result;
 };
+
 
 // Static method to get average values for each month in the current year
 AnalyticsSchema.statics.getAveragesForYear = async function(farmerID) {
