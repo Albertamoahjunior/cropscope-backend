@@ -272,7 +272,7 @@ exports.fetchDataAnalytics = async (req, res) => {
       const monthAnalytics = await Analytics.getAveragesForMonth(id)
       res.json(monthAnalytics);
       break;
-      case 'week':
+      case 'year':
       const yearAnalytics = await Analytics.getAveragesForYear(id)
       res.json(yearAnalytics);
       break;
