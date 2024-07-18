@@ -19,7 +19,7 @@ const subscribeToTopic= () => {
   }
 
   const topic = 'cropscopefarm';
-  const qos = 0;
+  const qos = 1;
 
   try {
     client.subscribe(topic, { qos }, (error) => {
