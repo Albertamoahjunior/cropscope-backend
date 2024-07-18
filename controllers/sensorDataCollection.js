@@ -2,14 +2,14 @@ const mqtt = require('mqtt');
 const { dataAnalysis } = require('./farmerController');
 const config = require('../config');
 
-const subscribeToTopic= () => {
+const subscribeToTopic = () => {
   const clientId = 'cropscope' + Math.random().toString(16).substring(2, 8);
   const username = 'albertlife';
   const password = 'Qsx.123_456';
 
   let client;
   try {
-    client = mqtt.connect('mqtts://z44662e8.ala.eu-central-1.emqxsl.com:8883', {
+    client = mqtt.connect('wss://z44662e8.ala.eu-central-1.emqxsl.com:8084/mqtt', {
       clientId,
       username,
       password,
@@ -68,4 +68,3 @@ const subscribeToTopic= () => {
 };
 
 module.exports = subscribeToTopic;
-
