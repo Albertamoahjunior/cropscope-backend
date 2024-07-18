@@ -57,7 +57,7 @@ const subscribeToTopic = () => {
   });
 
   client.on('offline', () => {
-    console.log('Client went offline');
+    console.log('Client is offline');
   });
 
   client.on('reconnect', () => {
