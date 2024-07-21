@@ -5,6 +5,13 @@ const jwt = require('jsonwebtoken');
 const config = require('../config');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
+const smsapikey = 'Z0dIcXBFak15ZXpHQkVIeW9nUm4';
+
+//function to send  a text message to new farmers
+const newFarmer = (phone, farmer_name) =>{
+   axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=Hello ${farmer_name} !Thank you for choosing cropscope! Enjoy a bountiful farm`)
+  .then((response) => {console.log(response.data)})
+}
 
 // Admin signup
 exports.signup = async (req, res) => {
@@ -206,6 +213,7 @@ exports.addFarmer = async (req, res) => {
     });
 
     await farmer.save();
+    newFarmer(phone, fullName);
 
     res.json({ id: farmer._id });
   } catch (error) {

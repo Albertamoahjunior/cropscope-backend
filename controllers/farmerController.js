@@ -10,52 +10,66 @@ const config = require('../config');
 
 // Generate JWT token
 const generateToken = (id) => {
-  return jwt.sign({ id }, config.jwtSecret, { expiresIn: '30d' });
+  return jwt.sign({ id }, config.jwtSecret, { expiresIn: '3d' });
 };
+
+const smsapikey = "Z0dIcXBFak15ZXpHQkVIeW9nUm4"
 
 //send message concerning critical conditions
 //message for critical temperature
 const atmosphericTemperatureHigh = (temperature, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${config.smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The atmospheric temperature of your farm is too high, please water it.The temperature is ${temperature}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The atmospheric temperature of your farm is too high, please water it.The temperature is ${temperature}`)
   .then((response) => {console.log(response.data)})
 }
 
 //message for critical temperature
 const atmosphericTemperatureLow = (temperature, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${config.smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The atmospheric temperature of your farm is too low, please do  not water it.The temperature is ${temperature}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The atmospheric temperature of your farm is too low, please do  not water it.The temperature is ${temperature}`)
   .then((response) => {console.log(response.data)})
 }
 
 //message for critical moisture level low
 const soilMoisturelow = (moistureLevel, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${config.smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The soil moisture level of your farm is too low, please water it.The moisture level is ${moistureLevel}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The soil moisture level of your farm is too low, please water it.The moisture level is ${moistureLevel}`)
   .then((response) => {console.log(response.data)})
 }
 
 //message for critical moisture level High
 const soilMoistureHigh = (moistureLevel, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${config.smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The soil moisture level of your farm is too high, please do not water it.The moisture level is ${moistureLevel}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The soil moisture level of your farm is too high, please do not water it.The moisture level is ${moistureLevel}`)
   .then((response) => {console.log(response.data)})
 }
 
 //message for critical humidity
 const atmosphericHumidityHigh = (moistureLevel, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${config.smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The atmospheric humdity level of your farm is too high, please do not water it.The humidity level is ${moistureLevel}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The atmospheric humdity level of your farm is too high, please do not water it.The humidity level is ${moistureLevel}`)
   .then((response) => {console.log(response.data)})
 }
 
 const atmosphericHumidityLow = (moistureLevel, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${config.smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The soil moisture level of your farm is too low, please do not water it.The humidity level is ${moistureLevel}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The soil moisture level of your farm is too low, please do not water it.The humidity level is ${moistureLevel}`)
   .then((response) => {console.log(response.data)})
 }
 
 const soilPhLow = (soilpH, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${config.smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The soil pH of your farm is too low, please do not water it.The moisture level is ${soilpH}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The soil pH of your farm is too low, please do not water it.The moisture level is ${soilpH}`)
   .then((response) => {console.log(response.data)})
 }
 
 const soilPhHigh= (soilpH, phone) => {
-  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${config.smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The soil pH of your farm is too high, please do not water it.The moisture level is ${soilpH}`)
+  axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=The soil pH of your farm is too high, please do not water it.The moisture level is ${soilpH}`)
+  .then((response) => {console.log(response.data)})
+}
+
+
+//function to send a message of update of phone number
+const updateFarmer = (phone, farmer_name) =>{
+   axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=Hello ${farmer_name}! You just changed your number. Thank you for choosing cropscope!`)
+  .then((response) => {console.log(response.data)})
+}
+
+const resetPassword = (phone, farmer_name) =>{
+   axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=Hello ${farmer_name}! You just changed your password. Thank you for choosing cropscope!`)
   .then((response) => {console.log(response.data)})
 }
 
@@ -106,6 +120,7 @@ exports.updatePhone = async (req, res) => {
     farmer.phone = phone;
 
     await farmer.save();
+    updateFarmer(phone, farmer.fullName);
 
     res.json({ msg: 'Phone updated' });
   } catch (error) {
@@ -177,6 +192,7 @@ exports.resetPassword = async (req, res) => {
 
     farmer.password = password;
     await farmer.save();
+    resetPassword(farmer.phone, farmer.fullName);
 
     res.status(200).json({ msg: 'Password reset successfully' });
 
