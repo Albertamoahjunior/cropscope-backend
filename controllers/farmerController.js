@@ -292,6 +292,10 @@ exports.fetchDataAnalytics = async (req, res) => {
       const yearAnalytics = await Analytics.getAveragesForYear(id)
       res.json(yearAnalytics);
       break;
+      case 'since':
+      const sinceAnalytics = await Analytics.getAveragesForEachDay(id)
+      res.json(sinceAnalytics);
+      break;
     }
 
     
