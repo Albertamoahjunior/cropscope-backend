@@ -111,7 +111,7 @@ exports.updatePhone = async (req, res) => {
   const { id, phone } = req.body;
 
   try {
-    const farmer = await Farmer.findOne({id});
+    const farmer = await Farmer.findOne({_id: id});
 
     if (!farmer) {
       return res.status(404).json({ msg: 'Farmer not found' });
