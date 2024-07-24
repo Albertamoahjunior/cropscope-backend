@@ -21,6 +21,20 @@ farmerSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+// Add a static method to remove a farmer by email
+farmerSchema.statics.removeFarmer = async function (id) {
+  try {
+    const result = await this.findOneAndDelete({ _id:id});
+    if (!result) {
+      return 'Farmer not found';
+    } else {
+      return 'Farmer removed successfully';
+    }
+  } catch (error) {
+    console.error('Error removing farmer:', error);
+  }
+};
+
 const Farmer = mongoose.model('Farmer', farmerSchema);
 
 module.exports = Farmer;

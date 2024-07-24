@@ -223,20 +223,42 @@ exports.addFarmer = async (req, res) => {
   }
 };
 
+//Admin update farmer
+exports.updateFarmer = async (req, res) => {
+  const { fullName, email, password, location, phone} = req.body;
+
+  try {
+    let farmer = await Farmer.findOne({ email });
+
+    if (!farmer) {
+      return res.status(400).json({ msg: 'Farmer does not exists' });
+    }
+
+    farmer.fullName = fullName;
+    farmer.email = email;
+    farmer.password = password;
+    farmer.location = location;
+    farmer.phone = phone;
+  
+
+    await farmer.save();
+    newFarmer(phone, fullName);
+
+    res.json("Farmer updated Successfully");
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+};
+
 // Admin remove farmer
 exports.removeFarmer = async (req, res) => {
   const { id } = req.params;
 
   try {
-    let farmer = await Farmer.findById(id);
+    let farmer = await Farmer.removeFarmer(id);
 
-    if (!farmer) {
-      return res.status(404).json({ msg: 'Farmer not found' });
-    }
-
-    await farmer.remove();
-
-    res.json({ msg: 'Farmer removed' });
+    res.status(200).send(farmer);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');

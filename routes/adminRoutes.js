@@ -16,5 +16,6 @@ router.use(authMiddleware);
 router.get('/list-farmers', adminController.listFarmers);
 router.post('/add-farmer', adminController.addFarmer);
 router.delete('/remove-farmer/:id', adminController.removeFarmer);
+router.post('/edit-farmer', adminController.updateFarmer);
 
 module.exports = router;
