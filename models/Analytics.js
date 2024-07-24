@@ -230,7 +230,11 @@ AnalyticsSchema.statics.getAveragesForEachDay = async function(farmerID) {
     { $match: { farmerID } },
     {
       $group: {
-        _id: { $year: '$timestamp', $month: '$timestamp', $day: '$timestamp' },
+        _id: {
+          year: { $year: '$timestamp' },
+          month: { $month: '$timestamp' },
+          day: { $dayOfMonth: '$timestamp' }
+        },
         averageAtmosphericTemperature: { $avg: '$atmosphericTemperature' },
         averageAtmosphericHumidity: { $avg: '$atmosphericHumidity' },
         averageSoilMoisture: { $avg: '$soilMoisture' },
@@ -242,6 +246,7 @@ AnalyticsSchema.statics.getAveragesForEachDay = async function(farmerID) {
 
   return result;
 };
+
 
 // Static method to get average values for each week so far
 AnalyticsSchema.statics.getAveragesForEachWeek = async function(farmerID) {

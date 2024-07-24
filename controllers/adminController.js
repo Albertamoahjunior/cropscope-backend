@@ -6,6 +6,7 @@ const config = require('../config');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const smsapikey = 'Z0dIcXBFak15ZXpHQkVIeW9nUm4';
+const axios = require('axios');
 
 //function to send  a text message to new farmers
 const newFarmer = (phone, farmer_name) =>{

@@ -13,7 +13,7 @@ const generateToken = (id) => {
   return jwt.sign({ id }, config.jwtSecret, { expiresIn: '3d' });
 };
 
-const smsapikey = "Z0dIcXBFak15ZXpHQkVIeW9nUm4"
+const smsapikey = "SHpBTVVHcFpOZWplQWRaenFXRVI"
 
 //send message concerning critical conditions
 //message for critical temperature
@@ -121,6 +121,11 @@ exports.updatePhone = async (req, res) => {
 
     await farmer.save();
     updateFarmer(phone, farmer.fullName);
+    console.log({
+      msg: 'Phone updated successfully',
+      phone: farmer.phone,
+      name: farmer.fullName
+    });
 
     res.json({ msg: 'Phone updated' });
   } catch (error) {
