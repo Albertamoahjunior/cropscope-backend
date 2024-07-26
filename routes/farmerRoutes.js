@@ -15,5 +15,6 @@ router.post('/data-analysis', farmerController.dataAnalysis);
 router.post('/update-phone', farmerController.updatePhone);
 router.post('/overview',farmerController.fetchOverviewData);
 router.post('/fetch-data-analytics',farmerController.fetchDataAnalytics);
+router.get('/fetch-recommendations/:id',farmerController.fetchRecommendations)
 
 module.exports = router;

@@ -384,8 +384,9 @@ exports.fetchOverviewData = async (req, res) => {
 
 // Controller to fetch recommendations in ascending order
 exports.fetchRecommendations = async (req, res) => {
+  const farmer_id = req.params.id;
   try {
-    const recommendations = await Recommendations.fetchRecommendations();
+    const recommendations = await Recommendations.fetchRecommendations(farmer_id);
     res.status(200).json(recommendations);
   } catch (error) {
     console.error(error.message);

@@ -1,16 +1,5 @@
 const mongoose = require('mongoose');
 
-const RecommendationSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-});
-
 const RecommendationsSchema = new mongoose.Schema({
   _id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -29,7 +18,7 @@ const RecommendationsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  suggestion:{
+  suggestion: {
     type: String,
     required: true,
     default: "Continue to keep your farm in good shape",
@@ -40,11 +29,12 @@ const RecommendationsSchema = new mongoose.Schema({
   },
 });
 
-// Static method to fetch recommendations in ascending order
-RecommendationsSchema.statics.fetchRecommendations = function() {
-  return this.find().sort({ timestamp: -1 }).exec();
+// Static method to fetch recommendations by farmerID in ascending order
+RecommendationsSchema.statics.fetchRecommendations = function(farmerID) {
+  return this.find({ farmerID: farmerID }).sort({ timestamp: -1 }).exec();
 };
 
 const Recommendations = mongoose.model('Recommendations', RecommendationsSchema);
 module.exports = Recommendations;
+
 
