@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const config = require('../config'); 
+const simple_recommend = require('./simpleRecommendation');
 
 // Generate JWT token
 const generateToken = (id) => {
@@ -207,6 +208,45 @@ exports.resetPassword = async (req, res) => {
   }
 };
 
+// Controller to add a new recommendation
+addRecommendation = async (farmerID) => {
+
+  try {
+    const farmer = await Farmer.findOne({ _id: farmerID });
+
+    if (!farmer) {
+      return { msg: 'Farmer not found' };
+    }
+
+    const averages = await Analytics.getAveragesForToday(farmerID);
+
+    if (!averages) {
+      return { msg: 'No analytics data found for today' };
+    }
+
+    const { averageSoilMoisture, averageSoilPH, averageAtmosphericTemperature, averageAtmosphericHumidity } = averages;
+    const recommendation = simple_recommend(
+      averageSoilMoisture,
+      averageSoilPH,
+      averageAtmosphericTemperature,
+      averageAtmosphericHumidity
+    );
+
+    const newRecommendation = new Recommendations({
+      farmerID,
+      condition: recommendation.condition,
+      disease: recommendation.disease,
+      suggestion: recommendation.suggestions
+    });
+
+    await newRecommendation.save();
+    return "msg: Recommendation saved successfully";
+  } catch (error) {
+    return `msg: ${error.message}`;
+  }
+};
+
+
 // Data analysis controller (protected route)
 exports.dataAnalysis = async (farm_data) => {
   const {farmerID, atmosphericHumidity, atmosphericTemperature, soilMoisture, soilPH} = farm_data;
@@ -220,7 +260,7 @@ exports.dataAnalysis = async (farm_data) => {
 
       const farmer_phone = farmer.phone;
 
-      // Alert for humidity
+      // Alert for humidityconst mongoose = require('mongoose');  
       if (atmosphericHumidity < ATMOHUMIDITYLOWTHRESHOLD) {
         atmosphericHumidityLow(atmosphericHumidity, farmer_phone);
       } else if (atmosphericHumidity > ATMOHUMIDITYHIGHTHRESHOLD) {
@@ -257,11 +297,14 @@ exports.dataAnalysis = async (farm_data) => {
     });
 
     newAnalytics.save()
-      .then(() => console.log('Analytics saved successfully'))
+      .then(() => {
+        console.log('Analytics saved successfully')
+      })
       .catch(err => console.error('Error saving analytics:', err));
 
-}
-
+      let new_recommend = await addRecommendation(farmerID);
+      console.log(new_recommend);
+   }
     
   catch (error) {
     console.error(error.message);
@@ -339,48 +382,11 @@ exports.fetchOverviewData = async (req, res) => {
   }
 };
 
-
-
-//controller to fetch recommendations
-exports.recommendations = async (req, res) => {
-  const {id, time, recommendation} = req.body;
-   try {
-    const farmer = await Farmer.findOne({id});
-
-    if (!farmer) {
-      return res.status(404).json({ msg: 'Farmer not found' });
-    }
-
-    const newRecommendation =  new Recommendations()
-    newRecommendations._id = id;
-    newRecommendations.timestamp = time;
-    newRecommendations.recommendations = recommendation;
-
-    newRecommendations.save()
-    .then(() => res.status(200).send("recommendations saved successfully"))
-    .catch(() => res.status(400).send("recommendations saved failed"))
-
-    
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send('Server Error');
-  }
-};
-
-
+// Controller to fetch recommendations in ascending order
 exports.fetchRecommendations = async (req, res) => {
-  const {id} = req.params;
-   try {
-    const farmer = await Farmer.findOne({id});
-
-    if (!farmer) {
-      return res.status(404).json({ msg: 'Farmer not found' });
-    }
-
-    //collect the data required for recommendations from GCP using the farmer id
-    //return their recommendations to them
-
-    
+  try {
+    const recommendations = await Recommendations.fetchRecommendations();
+    res.status(200).json(recommendations);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');
