@@ -9,8 +9,13 @@ const smsapikey = 'Z0dIcXBFak15ZXpHQkVIeW9nUm4';
 const axios = require('axios');
 
 //function to send  a text message to new farmers
-const newFarmer = (phone, farmer_name) =>{
-   axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=Hello ${farmer_name} !Thank you for choosing cropscope! Enjoy a bountiful farm`)
+const newFarmer = (phone, farmer_name, password) =>{
+   axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=Hello ${farmer_name} !Thank you for choosing cropscope! This is your default password: ${password} . You are advised to change the password. Enjoy a bountiful farm`)
+  .then((response) => {console.log(response.data)})
+}
+
+const updatedFarmer = (phone, farmer_name) =>{
+   axios.get(`https://sms.arkesel.com/sms/api?action=send-sms&api_key=${smsapikey}&to=${phone.substring(1)}&from=CropScope&sms=Hello ${farmer_name} !Thank you for choosing cropscope!  Enjoy a bountiful farm`)
   .then((response) => {console.log(response.data)})
 }
 
@@ -214,7 +219,7 @@ exports.addFarmer = async (req, res) => {
     });
 
     await farmer.save();
-    newFarmer(phone, fullName);
+    newFarmer(phone, fullName, password);
 
     res.json({ id: farmer._id });
   } catch (error) {
@@ -242,7 +247,7 @@ exports.updateFarmer = async (req, res) => {
   
 
     await farmer.save();
-    newFarmer(phone, fullName);
+    updatedFarmer(phone, fullName);
 
     res.json("Farmer updated Successfully");
   } catch (error) {
